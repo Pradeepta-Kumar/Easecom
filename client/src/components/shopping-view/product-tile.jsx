@@ -45,7 +45,8 @@ function ShoppingProductTile({
     });
   };
 
-  console.log(window.location.pathname);
+  const productId = window.location.pathname === "/shop/wishlist" ? product?.productId : product?._id;
+
   return (
     <Card className="flex w-full max-w-sm mx-auto flex-col">
       <div onClick={() => handleGetProductDetails(product?._id)}>
@@ -97,7 +98,7 @@ function ShoppingProductTile({
       <CardFooter className="gap-3">
         <Button
           onClick={() =>
-            handleAddToCart(product?.productId, product?.totalStock)
+            handleAddToCart(productId, product?.totalStock)
           }
           className="w-full"
           disabled={product.totalStock === 0}
@@ -106,14 +107,14 @@ function ShoppingProductTile({
         </Button>
         {window.location.pathname !== "/shop/wishlist" ? (
           <Button
-            onClick={() => handleAddToWishlist(user?.id, product?.productId)}
+            onClick={() => handleAddToWishlist(user?.id, productId)}
           >
             <Heart />
           </Button>
         ) : (
           <Button
             onClick={() =>
-              handleRemoveFromWishlist(user?.id, product?.productId)
+              handleRemoveFromWishlist(user?.id, productId)
             }
           >
             <HeartCrack />

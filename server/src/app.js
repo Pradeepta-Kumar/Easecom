@@ -12,6 +12,12 @@ const shopOrderRouter = require("../src/routes/shop/order.routes");
 const shopReviewRouter = require("../src/routes/shop/reviews.routes");
 const shopSearchRouter = require("../src/routes/shop/search.routes");
 const shopWishlistRouter = require("../src/routes/shop/wishlist.routes");
+const dotenv = require("dotenv");
+
+dotenv.config({
+  path: "./.env",
+});
+
 
 //middlewares
 app.use(

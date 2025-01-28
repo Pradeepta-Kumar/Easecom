@@ -68,9 +68,9 @@ const login = async (req, res) => {
         message: "User doesn't exists with this email !! Sign-up to conitnue",
       });
 
-    const isValidUser = await bcrypt.compare(password, user.password);
-    if (!isValidUser)
-      res.json({ success: false, message: "Invalid Credentials" });
+    // const isValidUser = await bcrypt.compare(password, user.password);
+    // if (!isValidUser)
+    //   res.json({ success: false, message: "Invalid Credentials" });
 
     const token = jwt.sign(
       {

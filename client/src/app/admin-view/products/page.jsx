@@ -88,7 +88,6 @@ const AdminProducts = () => {
   }
 
   function handleDelete(getCurrentProductId) {
-    console.log(getCurrentProductId);
     dispatch(deleteProduct(getCurrentProductId)).then(data => {
       console.log("deleted data = ", data);
       if(data?.payload?.success) dispatch(fetchAllProducts());

@@ -32,7 +32,7 @@ export const fetchAllProducts = createAsyncThunk(
 );
 export const editProduct = createAsyncThunk(
   "/products/editProduct",
-  async ({id, formData}) => {
+  async ({ id, formData }) => {
     const result = await axios.put(
       `http://localhost:8000/api/admin/products/edit-product/${id}`,
       formData,
@@ -48,16 +48,10 @@ export const editProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "/products/deleteProduct",
   async (id) => {
-    try {
-      const result = await axios.delete(
-        `http://localhost:8000/api/admin/products/delete-product/${id}`,
-      );
-      console.log("Id = ", id);
-      console.log("Result = ", result);
-      return result?.data;
-    } catch (err) {
-      console.log(`Couldn't delete the product with id ${id} = `, err);
-    }
+    const response = await axios.delete(
+      `http://localhost:8000/api/admin/products/delete-product/${id}`
+    );
+    return response?.data;
   }
 );
 
@@ -76,6 +70,18 @@ const AdminProductsSlice = createSlice({
         state.productList = action.payload.data;
       })
       .addCase(fetchAllProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.productList = [];
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        console.log(action.payload.data);
+        state.isLoading = false;
+        state.productList = action.payload.data;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.productList = [];
       });

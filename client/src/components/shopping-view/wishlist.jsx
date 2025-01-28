@@ -66,10 +66,8 @@ const Wishlist = () => {
     if (productDetails !== null) setOpenDetailsDialogue(true);
   }, [productDetails]);
 
-  console.log({wishlist});
-
   return (
-    <div className="container mx-auto md:px-6 px-4 py-8">
+    <div className="container mx-auto md:px-6 px-4 py-8 bg-indigo-950 h-full">
       <div>
         {wishlist?.length === 0 ? (
           <h1 className="text-5xl font-extrabold">No items in wishlist</h1>
@@ -78,7 +76,7 @@ const Wishlist = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {wishlist?.items &&
           wishlist?.items?.length > 0 ?
-          wishlist.items.map((item, idx) => ( 
+          wishlist.items?.map((item, idx) => ( 
             <ShoppingProductTile
               key={idx}
               handleAddToCart={handleAddToCart}

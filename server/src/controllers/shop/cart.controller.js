@@ -4,7 +4,9 @@ const Product = require("../../models/products");
 const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
-    if (!userId || !productId || !quantity)
+    console.log({ userId, productId, quantity });
+
+    if (!userId || !productId || !quantity || quantity <= 0 || isNaN(quantity))
       return res
         .status(400)
         .json({ success: false, message: "Invalid data provided" });
@@ -15,15 +17,18 @@ const addToCart = async (req, res) => {
         .status(404)
         .json({ success: false, message: "No such product found..." });
 
-    const cart = await Cart.findOne({ userId });
+    let cart = await Cart.findOne({ userId });
     if (!cart) cart = new Cart({ userId, items: [] });
 
     const findCurrentProductIndex = cart.items.findIndex(
-      (item) => item.productId.toString() === productId
+      (item) => item.productId.toString() === productId.toString()
     );
-    if (findCurrentProductIndex === -1)
+
+    if (findCurrentProductIndex === -1) {
       cart.items.push({ productId, quantity });
-    else cart.items[findCurrentProductIndex].quantity += quantity;
+    } else {
+      cart.items[findCurrentProductIndex].quantity += quantity;
+    }
 
     await cart.save();
     return res.status(200).json({
@@ -32,13 +37,14 @@ const addToCart = async (req, res) => {
       data: cart,
     });
   } catch (err) {
-    console.log("Couldn't add item to cart");
-    res.json({
+    console.error("Couldn't add item to cart:", err);
+    res.status(500).json({
       success: false,
-      message: "Error while adding item to the cart",
+      message: err.message || "Error while adding item to the cart",
     });
   }
 };
+
 
 const fetchCartItems = async (req, res) => {
   try {

@@ -60,7 +60,7 @@ const addProduct = async (req, res) => {
 const fetchAllProducts = async (req, res) => {
   try {
     const allProducts = await Product.find();
-    console.log(allProducts);
+    // console.log(allProducts);
     res.status(200).json({
       success: true,
       data: allProducts,
@@ -123,10 +123,11 @@ const editProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log({id});
     const product = await Product.findByIdAndDelete(id);
     if (!product) res.status(404).json({ success: false, message: "Product not found" });
     res
-      .status(201)
+      .status(200)
       .json({ success: true, message: "Product deleted successfully" });
   } catch (err) {
     console.log("Error while deleting the product, ", err);
